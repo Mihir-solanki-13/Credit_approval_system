@@ -25,6 +25,4 @@ for index, row in df.iterrows():
         phone_number=row['Phone Number'],
         approved_limit=row['Approved Limit'],
     )
-    customer.calculate_credit_score()
-    customer.calculate_approved_limit()
     customer.save()
