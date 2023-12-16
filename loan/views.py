@@ -144,3 +144,29 @@ def view_loan(request, loan_id):
     }
 
     return Response(response_data, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def view_loans(request, customer_id):
+    try:
+        loans = Loan.objects.filter(customer__id=customer_id)
+    except Loan.DoesNotExist:
+        return Response({'error': 'Customer not found'}, status=status.HTTP_404_NOT_FOUND)
+    print('loan',loans)
+    # Serialize each loan data
+    loan_serializer = LoanSerializer(loans, many=True)
+ 
+    # Construct the response data
+    response_data = []
+
+    for loan in loan_serializer.data:
+        monthly_installment = calculate_monthly_installment( loan['loan_amount'], loan['interest_rate'],loan['tenure'])         
+        response_data.append({
+            'loan_id': loan['id'],
+            'loan_amount': loan['loan_amount'],
+            'interest_rate': loan['interest_rate'],
+            'monthly_installment': monthly_installment,  
+            'repayments_left': loan['tenure'] - loan['emis_paid_on_time'],
+        })
+
+    return Response(response_data, status=status.HTTP_200_OK)
