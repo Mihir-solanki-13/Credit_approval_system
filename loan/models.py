@@ -10,7 +10,4 @@ class Loan(models.Model):
     emis_paid_on_time = models.IntegerField(default=0)
     start_date = models.DateField()
     end_date = models.DateField()
-
-    def calculate_monthly_repayment(self):
-        # Implement your logic for calculating monthly repayment (EMI)
-        pass
+ 

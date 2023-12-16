@@ -28,7 +28,7 @@ def check_eligibility(request):
 
             # Implement your logic to check eligibility
             approval, corrected_interest_rate = check_loan_eligibility(customer, data['loan_amount'], data['interest_rate'], data['tenure'])
-            monthly_installment = calculate_monthly_installment
+            monthly_installment = calculate_monthly_installment(data['loan_amount'], data['interest_rate'], data['tenure'])
             # Prepare the response data
             response_data = {
                 'customer_id': data['customer_id'],
@@ -73,9 +73,9 @@ def create_loan(request):
                     return Response({'error': 'Customer not found.'}, status=status.HTTP_400_BAD_REQUEST)
 
                 # Check eligibility and process the loan
-                print('mihir')
+                # print('mihir')
                 approval, corrected_interest_rate  = check_loan_eligibility(customer, data['loan_amount'], data['interest_rate'], data['tenure'])
-                print('approval' ,approval)
+                # print('approval' ,approval)
                 monthly_installment = calculate_monthly_installment(data['loan_amount'], data['interest_rate'], data['tenure'])
                 print('monthly_installment' ,monthly_installment)
                 if approval == False:
