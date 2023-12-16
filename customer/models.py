@@ -9,4 +9,4 @@ class Customer(models.Model):
     phone_number = models.IntegerField(max_length=15)  # Assuming phone numbers as strings
     approved_limit = models.IntegerField()
     current_debt = models.FloatField(default=0.0)
-    credit_score = models.IntegerField(default=0)
+    
