@@ -9,6 +9,7 @@ from .loan_eligibility import check_loan_eligibility
 from datetime import datetime
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta  # Import relativedelta
+from customer.serializers import CustomerSerializer
 
 
 @api_view(['POST'])
@@ -27,7 +28,7 @@ def check_eligibility(request):
 
             # Implement your logic to check eligibility
             approval, corrected_interest_rate = check_loan_eligibility(customer, data['loan_amount'], data['interest_rate'], data['tenure'])
-            # monthly_installment = calculate_monthly_installment
+            monthly_installment = calculate_monthly_installment
             # Prepare the response data
             response_data = {
                 'customer_id': data['customer_id'],
@@ -115,3 +116,31 @@ def create_loan(request):
 
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+
+@api_view(['GET'])
+def view_loan(request, loan_id):
+    try:
+        loan = Loan.objects.get(pk=loan_id)
+    except Loan.DoesNotExist:
+        return Response({'error': 'Loan not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Serialize loan data
+    loan_serializer = LoanSerializer(loan)
+
+    # Serialize customer data
+    customer_serializer = CustomerSerializer(loan.customer)
+    monthly_installment = calculate_monthly_installment( loan.loan_amount, loan.interest_rate,loan.tenure)
+    # Construct the response data
+    response_data = {
+        'loan_id': loan.id,
+        'customer': customer_serializer.data,
+        'loan_amount': loan.loan_amount,
+        'interest_rate': loan.interest_rate,
+        'monthly_installment': monthly_installment,  # Replace with your calculation logic
+        'tenure': loan.tenure,
+    }
+
+    return Response(response_data, status=status.HTTP_200_OK)
