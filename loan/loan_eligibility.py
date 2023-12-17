@@ -7,18 +7,19 @@ def past_loan_completed_on_time(customer):
     loan_approved_volume=0
     total_loan_taken =0
     loans_in_current_year =0
+    total_loan = 0
+    paid_on_time = 0
+    loan_approved_volume=0
+    sum_of_current_loan =0
     if not loans.exists():
-       return 100,loan_approved_volume,total_loan_taken,loans_in_current_year
+       return 100,loan_approved_volume,total_loan_taken,loans_in_current_year,sum_of_current_loan
     
     # find today's date and check each loan if completed  then check with tenure
     
     current_year = datetime.now().year
     curr_date = timezone.now().date()
     loans_in_current_year = loans.filter(start_date__year=current_year).count()
-    total_loan = 0
-    paid_on_time = 0
-    loan_approved_volume=0
-    sum_of_current_loan =0
+    
 
     for loan in loans:
         total_loan_taken+=1
@@ -76,14 +77,12 @@ def check_loan_eligibility(customer, loan_amount, interest_rate, tenure):
 
     # Ensure credit rating is within the valid range (0 to 100)
     credit_rating = max(0, min(100, credit_rating))
- 
+    # print('credit_rating',credit_rating)
 
-    # Retrieve customer data
-    
-    credit_rating = percentage_paid_on_time*.25 + total_loan_taken
+     
     # sum_current_emis = customer.current_debt
     monthly_salary = customer.monthly_income
-
+    # print('credit_rating',credit_rating)
     # Implement credit approval logic
     if credit_rating > 50:
         approval = True
@@ -111,7 +110,7 @@ def check_loan_eligibility(customer, loan_amount, interest_rate, tenure):
         approval = False
         corrected_interest_rate = 0  # Reset interest rate if total EMIs exceed 50% of monthly salary
 
-   
+    # print('arrp',approval)
     return approval, corrected_interest_rate
 
  
