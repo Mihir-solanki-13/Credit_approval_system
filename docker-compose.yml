@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_DB: credit_approval
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: PASSWORD
+
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    command: ["sh","./start.sh"]
+    volumes:
+       - .:/app
+    depends_on:
+      - db
+
+ 

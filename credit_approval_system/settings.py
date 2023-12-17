@@ -24,7 +24,9 @@ SECRET_KEY =  SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+ 
 
 
 # Application definition
@@ -80,7 +82,7 @@ DATABASES = {
         'NAME': 'credit_approval',
         'USER': 'postgres',
         'PASSWORD': PASSWORD,
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
