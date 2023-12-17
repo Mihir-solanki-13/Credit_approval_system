@@ -3,11 +3,13 @@ version: '3'
 services:
   db:
     image: postgres
+    env_file:
+       .env
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
       POSTGRES_DB: credit_approval
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: PASSWORD
+      POSTGRES_PASSWORD: ${password}
 
   web:
     build: .

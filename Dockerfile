@@ -6,7 +6,6 @@ ENV PYTHONDONTWRITEBYTECODE 1
 WORKDIR /app
 
 COPY . /app/
-COPY secret.py/app/secret.py
 COPY customer_data.xlsx /app/customer_data.xlsx
 COPY loan_data.xlsx /app/loan_data.xlsx
 COPY import_loan_data.py /app/import_loan_data.py
